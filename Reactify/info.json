@@ -1,0 +1,8 @@
+{
+    "AUTHOR" : "Cheshire",
+    "INSTALL_MSG" : "Reactify Commands",
+    "NAME" : "Reactify",
+    "SHORT" : "Gives commands like kiss, bite, spank, ect with gifs.",
+    "DESCRIPTION" : "Gives the ability for users to interact with others with gifs through the bot.",
+    "TAGS" : ["fun", "social", "CheshireCogs", "Kiss", "Hug", "Bite", "Slap"]
+}     
