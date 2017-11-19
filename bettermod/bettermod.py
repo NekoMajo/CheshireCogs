@@ -67,16 +67,16 @@ class BetterMod:
                 'role': None,
             
                 'thumbnail' : {
-                    'warning_embed_simple': 'https://i.imgur.com/Bl62rGd.png',
-                    'warning_embed_kick': 'https://i.imgur.com/uhrYzyt.png',
-                    'warning_embed_ban': 'https://i.imgur.com/DfBvmic.png',
+                    'strikeing_embed_simple': 'https://i.imgur.com/Bl62rGd.png',
+                    'strikeing_embed_kick': 'https://i.imgur.com/uhrYzyt.png',
+                    'strikeing_embed_ban': 'https://i.imgur.com/DfBvmic.png',
                     'report_embed': 'https://i.imgur.com/Bl62rGd.png'
                 },
                     
                 'colour': {
-                    'warning_embed_simple': None,
-                    'warning_embed_kick': None,
-                    'warning_embed_ban': None,
+                    'strikeing_embed_simple': None,
+                    'strikeing_embed_kick': None,
+                    'strikeing_embed_ban': None,
                     'report_embed': None
                 }
             }
@@ -100,13 +100,13 @@ class BetterMod:
         
         if user.id not in history:
             history[user.id] = {
-                'simple-warn': 0,
-                'kick-warn': 0,
-                'ban-warn': 0,
-                'total-warns': 0
+                'simple-strike': 0,
+                'kick-strike': 0,
+                'ban-strike': 0,
+                'total-strikes': 0
             }
         
-        total = history[user.id]['total-warns'] + 1
+        total = history[user.id]['total-strikes'] + 1
 
         history[user.id]['case{}'.format(total)] = {
             'level': 'None',
@@ -120,17 +120,17 @@ class BetterMod:
         history[user.id]['case{}'.format(total)]['reason'] = reason
         history[user.id]['case{}'.format(total)]['timestamp'] = timestamp
         
-        history[user.id]['total-warns'] = total
+        history[user.id]['total-strikes'] = total
         
         if level == 'Simple':
-            simple_total = history[user.id]['simple-warn'] + 1
-            history[user.id]['simple-warn'] = simple_total
+            simple_total = history[user.id]['simple-strike'] + 1
+            history[user.id]['simple-strike'] = simple_total
         elif level == 'Kick':
-            kick_total = history[user.id]['kick-warn'] + 1
-            history[user.id]['kick-warn'] = kick_total
+            kick_total = history[user.id]['kick-strike'] + 1
+            history[user.id]['kick-strike'] = kick_total
         elif level == 'Ban':
-            ban_total = history[user.id]['ban-warn'] + 1
-            history[user.id]['ban-warn'] = ban_total
+            ban_total = history[user.id]['ban-strike'] + 1
+            history[user.id]['ban-strike'] = ban_total
         else:
             pass
         
@@ -165,7 +165,7 @@ class BetterMod:
             return
         
         if i is not None:
-            if i > history[user.id]['total-warns'] or i<= 0:
+            if i > history[user.id]['total-strikes'] or i<= 0:
                 i = 1
     
         if not msg:
@@ -235,7 +235,7 @@ class BetterMod:
                 else:
                     i = i + 1
             
-                if i > history[user.id]['total-warns']:
+                if i > history[user.id]['total-strikes']:
                     i = 1
                 
                 if history[user.id]['case{}'.format(str(i))]['deleted'] == 1:
@@ -264,12 +264,12 @@ class BetterMod:
                     pass
                 
                 if i is None:
-                    i = history[user.id]['total-warns']
+                    i = history[user.id]['total-strikes']
                 else:
                     i = i - 1
                     
                 if i <= 0:
-                    i = history[user.id]['total-warns']
+                    i = history[user.id]['total-strikes']
                         
                 if history[user.id]['case{}'.format(str(i))]['deleted'] == 1:
                     i = i - 1
@@ -314,15 +314,15 @@ role to mention: {}
 
 colors:
     report: {}
-    simple warning: {}
-    kick warning: {}
-    ban warning: {}
+    simple strikeing: {}
+    kick strikeing: {}
+    ban strikeing: {}
                     
 thumbnail's URL pictures:
     report: {}
-    simple warning: {}
-    kick warning: {}
-    ban warning: {}""".format(self.bot.get_channel(set['mod-log']), discord.utils.get(server.roles, id=set['role']), set['colour']['report_embed'], set['colour']['warning_embed_simple'], set['colour']['warning_embed_kick'], set['colour']['warning_embed_ban'], set['thumbnail']['report_embed'], set['thumbnail']['warning_embed_simple'], set['thumbnail']['warning_embed_kick'], set['thumbnail']['warning_embed_ban'])
+    simple strikeing: {}
+    kick strikeing: {}
+    ban strikeing: {}""".format(self.bot.get_channel(set['mod-log']), discord.utils.get(server.roles, id=set['role']), set['colour']['report_embed'], set['colour']['strikeing_embed_simple'], set['colour']['strikeing_embed_kick'], set['colour']['strikeing_embed_ban'], set['thumbnail']['report_embed'], set['thumbnail']['strikeing_embed_simple'], set['thumbnail']['strikeing_embed_kick'], set['thumbnail']['strikeing_embed_ban'])
                         
             await self.bot.say("```{}```".format(message))
 
@@ -435,8 +435,8 @@ thumbnail's URL pictures:
         await self.bot.say("New embed color has been registered. If the value is invalid, the color will not change.")
 
     @color.command(pass_context=True, no_pm=True, name="simple", aliases="1")
-    async def simple_warn_color(self, ctx, color: str = '000000'):
-        """Set the warning embed color bar in the log channel for the simple type
+    async def simple_strike_color(self, ctx, color: str = '000000'):
+        """Set the strikeing embed color bar in the log channel for the simple type
             
             Please provide an hexadecimal color (same color character chain as discord roles). Example: #ffff = cyan
             Useful website: http://www.color-hex.com
@@ -455,7 +455,7 @@ thumbnail's URL pictures:
         except ValueError:
             color = '000000'
         
-        self.settings[server.id]['colour']['warning_embed_simple'] = color
+        self.settings[server.id]['colour']['strikeing_embed_simple'] = color
         try:
             dataIO.save_json('data/bettermod/settings.json', self.settings)
         except:
@@ -465,8 +465,8 @@ thumbnail's URL pictures:
             
 
     @color.command(pass_context=True, no_pm=True, name="kick", aliases="2")
-    async def kick_warn_color(self, ctx, color: str = '000000'):
-        """Set the warning embed color bar in the log channel for the kick type
+    async def kick_strike_color(self, ctx, color: str = '000000'):
+        """Set the strikeing embed color bar in the log channel for the kick type
         
         Please provide an hexadecimal color (same color character chain as discord roles). Example: #ffff = cyan
         Useful website: http://www.color-hex.com
@@ -486,7 +486,7 @@ thumbnail's URL pictures:
         except ValueError:
             color = '000000'
                                         
-        self.settings[server.id]['colour']['warning_embed_kick'] = color
+        self.settings[server.id]['colour']['strikeing_embed_kick'] = color
         try:
             dataIO.save_json('data/bettermod/settings.json', self.settings)
         except:
@@ -495,8 +495,8 @@ thumbnail's URL pictures:
         await self.bot.say("New embed color has been registered. If the value is invalid, the color will not change.")
             
     @color.command(pass_context=True, no_pm=True, name="ban", aliases="3")
-    async def ban_warn_color(self, ctx, color: str = '000000'):
-        """Set the warning embed color bar in the log channel for the ban type
+    async def ban_strike_color(self, ctx, color: str = '000000'):
+        """Set the strikeing embed color bar in the log channel for the ban type
             
             Please provide an hexadecimal color (same color character chain as discord roles). Example: #ffff = cyan
             Useful website: http://www.color-hex.com
@@ -516,7 +516,7 @@ thumbnail's URL pictures:
         except ValueError:
             color = '000000'
         
-        self.settings[server.id]['colour']['warning_embed_ban'] = color
+        self.settings[server.id]['colour']['strikeing_embed_ban'] = color
         try:
             dataIO.save_json('data/bettermod/settings.json', self.settings)
         except:
@@ -560,7 +560,7 @@ thumbnail's URL pictures:
 
     @thumbnail.command(name="simple", pass_context=True, no_pm=True)
     async def simple_thumbnail(self, ctx, *, url):
-        """Set the picture of the simple warning embed in modlog"""
+        """Set the picture of the simple strikeing embed in modlog"""
     
         server = ctx.message.server
     
@@ -576,16 +576,16 @@ thumbnail's URL pictures:
     
         else:
             try:
-                self.settings[server.id]['thumbnail']['warning_embed_simple'] = url
+                self.settings[server.id]['thumbnail']['strikeing_embed_simple'] = url
                 dataIO.save_json('data/bettermod/settings.json', self.settings)
-                await self.bot.say("The new thumbnail for the simple warning embed has been set. If the URL is not valid, no thumbnail will be shown in the embed.")
+                await self.bot.say("The new thumbnail for the simple strikeing embed has been set. If the URL is not valid, no thumbnail will be shown in the embed.")
             except:
                 await self.error(ctx)
                 return
                     
     @thumbnail.command(pass_context=True, no_pm=True, name="kick")
     async def kick_thumbnail(self, ctx, url: str):
-        """Set the picture of the kick warning embed in modlog"""
+        """Set the picture of the kick strikeing embed in modlog"""
         
         server = ctx.message.server
         
@@ -601,16 +601,16 @@ thumbnail's URL pictures:
         
         else:
             try:
-                self.settings[server.id]['thumbnail']['warning_embed_kick'] = url
+                self.settings[server.id]['thumbnail']['strikeing_embed_kick'] = url
                 dataIO.save_json('data/bettermod/settings.json', self.settings)
-                await self.bot.say("The new thumbnail for the kick warning embed has been set. If the URL is not valid, no thumbnail will be shown in the embed.")
+                await self.bot.say("The new thumbnail for the kick strikeing embed has been set. If the URL is not valid, no thumbnail will be shown in the embed.")
             except:
                 await self.error(ctx)
                 return
 
     @thumbnail.command(pass_context=True, no_pm=True, name="ban")
     async def ban_thumbnail(self, ctx, url: str):
-        """Set the picture of the ban warning embed in modlog"""
+        """Set the picture of the ban strikeing embed in modlog"""
         
         server = ctx.message.server
         
@@ -626,9 +626,9 @@ thumbnail's URL pictures:
         
         else:
             try:
-                self.settings[server.id]['thumbnail']['warning_embed_ban'] = url
+                self.settings[server.id]['thumbnail']['strikeing_embed_ban'] = url
                 dataIO.save_json('data/bettermod/settings.json', self.settings)
-                await self.bot.say("The new thumbnail for the ban warning embed has been set. If the URL is not valid, no thumbnail will be shown in the embed.")
+                await self.bot.say("The new thumbnail for the ban strikeing embed has been set. If the URL is not valid, no thumbnail will be shown in the embed.")
             except:
                 await self.error(ctx)
                 return
@@ -689,15 +689,15 @@ thumbnail's URL pictures:
 
     @commands.group(pass_context=True, no_pm=True)
     @checks.mod()
-    async def warn(self, ctx):
-        """Send a warning to a user and store it"""
+    async def strike(self, ctx):
+        """Send a strikeing to a user and store it"""
         if ctx.invoked_subcommand is None:
             await self.bot.send_cmd_help(ctx)
 
     @checks.mod_or_permissions(administrator=True)
-    @warn.command(pass_context=True, no_pm=True, aliases="1")
+    @strike.command(pass_context=True, no_pm=True, aliases="1")
     async def simple(self, ctx, user: discord.Member, *, reason: str):
-        """Send a warning to the user in DM and store it"""
+        """Send a strikeing to the user in DM and store it"""
 
         try:
             await self.bot.delete_message(ctx.message)
@@ -728,26 +728,26 @@ thumbnail's URL pictures:
             return
 
         # This is the embed sent in the moderator log channel
-        modlog = discord.Embed(title="Warning", description="A user got a level 1 warning")
+        modlog = discord.Embed(title="strikeing", description="A user got a level 1 strikeing")
         modlog.add_field(name="User", value=user.mention, inline=True)
         modlog.add_field(name="Moderator", value=author.mention, inline=True)
         modlog.add_field(name="Reason", value=reason, inline=False)
         modlog.set_author(name=user.name, icon_url=user.avatar_url)
         modlog.set_footer(text=ctx.message.timestamp.strftime("%d %b %Y %H:%M"))
-        modlog.set_thumbnail(url=self.settings[server.id]['thumbnail']['warning_embed_simple'])
+        modlog.set_thumbnail(url=self.settings[server.id]['thumbnail']['strikeing_embed_simple'])
         try:
-            modlog.color = discord.Colour(self.settings[server.id]['colour']['warning_embed_simple'])
+            modlog.color = discord.Colour(self.settings[server.id]['colour']['strikeing_embed_simple'])
         except:
             pass
 
         # This is the embed sent to the user
-        target = discord.Embed(description="The moderation team set you a level 1 warning")
+        target = discord.Embed(description="The moderation team set you a level 1 strikeing")
         target.add_field(name="Moderator", value=author.mention, inline=False)
         target.add_field(name="Reason", value=reason, inline=False)
         target.set_footer(text=ctx.message.timestamp.strftime("%d %b %Y %H:%M"))
-        target.set_thumbnail(url=self.settings[server.id]['thumbnail']['warning_embed_simple'])
+        target.set_thumbnail(url=self.settings[server.id]['thumbnail']['strikeing_embed_simple'])
         try:
-            target.color = discord.Colour(self.settings[server.id]['colour']['warning_embed_simple'])
+            target.color = discord.Colour(self.settings[server.id]['colour']['strikeing_embed_simple'])
         except:
             pass
 
@@ -762,9 +762,9 @@ thumbnail's URL pictures:
 
 
     @checks.mod_or_permissions(administrator=True)
-    @warn.command(pass_context=True, no_pm=True, aliases="2")
+    @strike.command(pass_context=True, no_pm=True, aliases="2")
     async def kick(self, ctx, user: discord.Member, *, reason: str):
-        """Send a warning to the user in DM and store it, while kicking him"""
+        """Send a strikeing to the user in DM and store it, while kicking him"""
         
         try:
             await self.bot.delete_message(ctx.message)
@@ -795,26 +795,26 @@ thumbnail's URL pictures:
             return
         
         # This is the embed sent in the moderator log channel
-        modlog = discord.Embed(title="Warning", description="A user got a level 2 (kick) warning")
+        modlog = discord.Embed(title="strikeing", description="A user got a level 2 (kick) strikeing")
         modlog.add_field(name="User", value=user.mention, inline=True)
         modlog.add_field(name="Moderator", value=author.mention, inline=True)
         modlog.add_field(name="Reason", value=reason, inline=False)
         modlog.set_author(name=user.name, icon_url=user.avatar_url)
         modlog.set_footer(text=ctx.message.timestamp.strftime("%d %b %Y %H:%M"))
-        modlog.set_thumbnail(url=self.settings[server.id]['thumbnail']['warning_embed_kick'])
+        modlog.set_thumbnail(url=self.settings[server.id]['thumbnail']['strikeing_embed_kick'])
         try:
-            modlog.color = discord.Colour(self.settings[server.id]['colour']['warning_embed_kick'])
+            modlog.color = discord.Colour(self.settings[server.id]['colour']['strikeing_embed_kick'])
         except:
             pass
         
         # This is the embed sent to the user
-        target = discord.Embed(description="The moderation team set you a level 2 (kick) warning")
+        target = discord.Embed(description="The moderation team set you a level 2 (kick) strikeing")
         target.add_field(name="Moderator", value=author.mention, inline=False)
         target.add_field(name="Reason", value=reason, inline=False)
         target.set_footer(text=ctx.message.timestamp.strftime("%d %b %Y %H:%M"))
-        target.set_thumbnail(url=self.settings[server.id]['thumbnail']['warning_embed_kick'])
+        target.set_thumbnail(url=self.settings[server.id]['thumbnail']['strikeing_embed_kick'])
         try:
-            target.color = discord.Colour(self.settings[server.id]['colour']['warning_embed_kick'])
+            target.color = discord.Colour(self.settings[server.id]['colour']['strikeing_embed_kick'])
         except:
             pass
         
@@ -837,9 +837,9 @@ thumbnail's URL pictures:
 
 
     @checks.mod_or_permissions(administrator=True)
-    @warn.command(pass_context=True, no_pm=True, aliases="3")
+    @strike.command(pass_context=True, no_pm=True, aliases="3")
     async def ban(self, ctx, user: discord.Member, *, reason: str):
-        """Send a warning to the user in DM and store it, while banning him"""
+        """Send a strikeing to the user in DM and store it, while banning him"""
         
         try:
             await self.bot.delete_message(ctx.message)
@@ -870,26 +870,26 @@ thumbnail's URL pictures:
             return
         
         # This is the embed sent in the moderator log channel
-        modlog = discord.Embed(title="Warning", description="A user got a level 3 (ban) warning")
+        modlog = discord.Embed(title="strikeing", description="A user got a level 3 (ban) strikeing")
         modlog.add_field(name="User", value=user.mention, inline=True)
         modlog.add_field(name="Moderator", value=author.mention, inline=True)
         modlog.add_field(name="Reason", value=reason, inline=False)
         modlog.set_author(name=user.name, icon_url=user.avatar_url)
         modlog.set_footer(text=ctx.message.timestamp.strftime("%d %b %Y %H:%M"))
-        modlog.set_thumbnail(url=self.settings[server.id]['thumbnail']['warning_embed_ban'])
+        modlog.set_thumbnail(url=self.settings[server.id]['thumbnail']['strikeing_embed_ban'])
         try:
-            modlog.color = discord.Colour(self.settings[server.id]['colour']['warning_embed_ban'])
+            modlog.color = discord.Colour(self.settings[server.id]['colour']['strikeing_embed_ban'])
         except:
             pass
         
         # This is the embed sent to the user
-        target = discord.Embed(description="The moderation team set you a level 3 (ban) warning")
+        target = discord.Embed(description="The moderation team set you a level 3 (ban) strikeing")
         target.add_field(name="Moderator", value=author.mention, inline=False)
         target.add_field(name="Reason", value=reason, inline=False)
         target.set_footer(text=ctx.message.timestamp.strftime("%d %b %Y %H:%M"))
-        target.set_thumbnail(url=self.settings[server.id]['thumbnail']['warning_embed_ban'])
+        target.set_thumbnail(url=self.settings[server.id]['thumbnail']['strikeing_embed_ban'])
         try:
-            target.color = discord.Colour(self.settings[server.id]['colour']['warning_embed_ban'])
+            target.color = discord.Colour(self.settings[server.id]['colour']['strikeing_embed_ban'])
         except:
             pass
         
@@ -913,7 +913,7 @@ thumbnail's URL pictures:
     @commands.group(pass_context=True)
     @checks.mod_or_permissions(administrator=True)
     async def case(self, ctx):
-        """Edit warnings' reasons or remove them"""
+        """Edit strikeings' reasons or remove them"""
     
         if ctx.invoked_subcommand is None:
             await self.bot.send_cmd_help(ctx)
@@ -924,7 +924,7 @@ thumbnail's URL pictures:
         """Give the sanction and the reason of a specific case
             
             If 0 is given, all of the cases of the user will be given
-            You need to be at least moderator to see other's warnings"""
+            You need to be at least moderator to see other's strikeings"""
         
         server = ctx.message.server
         author = ctx.message.author
@@ -971,20 +971,20 @@ thumbnail's URL pictures:
 
                         
         if allowed is False:
-            await self.bot.say("You are not allowed to check others's warnings")
+            await self.bot.say("You are not allowed to check others's strikeings")
             return
         
 
         if user.id not in history:
             if user != author:
-                await self.bot.say("That user doesn't have any warnings yet")
+                await self.bot.say("That user doesn't have any strikeings yet")
                 return
             
             else:
-                await self.bot.say("You don't have any warning yet")
+                await self.bot.say("You don't have any strikeing yet")
                 return
 
-        if case < 0 or case > history[user.id]['total-warns']:
+        if case < 0 or case > history[user.id]['total-strikes']:
             await self.bot.say("That case does not exist")
             return
 
@@ -993,7 +993,7 @@ thumbnail's URL pictures:
             e = discord.Embed(description="General user infos")
             e.set_author(name=user, icon_url=user.avatar_url)
 
-            e.add_field(name=u"\u2063", value="Total warns: {}\nSimple warns: {}\nKick warns: {}\nBan warns: {}".format(str(history[user.id]['total-warns']), str(history[user.id]['simple-warn']), str(history[user.id]['kick-warn']), str(history[user.id]['ban-warn'])))
+            e.add_field(name=u"\u2063", value="Total strikes: {}\nSimple strikes: {}\nKick strikes: {}\nBan strikes: {}".format(str(history[user.id]['total-strikes']), str(history[user.id]['simple-strike']), str(history[user.id]['kick-strike']), str(history[user.id]['ban-strike'])))
 
             e.set_footer(text="Click on the reaction to see all of the cases")
             
@@ -1037,10 +1037,10 @@ thumbnail's URL pictures:
             return
 
         if user.id not in history:
-            await self.bot.say("That user does not have any warning yet")
+            await self.bot.say("That user does not have any strikeing yet")
             return
         
-        if case < 0 or case > history[user.id]['total-warns'] or history[user.id]['case{}'.format(str(case))]['deleted'] == 1:
+        if case < 0 or case > history[user.id]['total-strikes'] or history[user.id]['case{}'.format(str(case))]['deleted'] == 1:
             await self.bot.say("That case does not exist or is already deleted")
             return
         
@@ -1050,15 +1050,15 @@ thumbnail's URL pictures:
         e.add_field(name="Reason", value=history[user.id]['case{}'.format(str(case))]['reason'], inline=False)
         
         if history[user.id]['case{}'.format(str(case))]['level'] == "Simple":
-            e.add_field(name="Total simple warnings", value="Before: {}\nAfter: {}".format(history[user.id]['simple-warn'], history[user.id]['simple-warn']- 1), inline=True)
+            e.add_field(name="Total simple strikeings", value="Before: {}\nAfter: {}".format(history[user.id]['simple-strike'], history[user.id]['simple-strike']- 1), inline=True)
         
         elif history[user.id]['case{}'.format(str(case))]['level'] == "Kick":
-            e.add_field(name="Total kick warnings", value="Before: {}\nAfter: {}".format(history[user.id]['kick-warn'], history[user.id]['kick-warn'] - 1), inline=True)
+            e.add_field(name="Total kick strikeings", value="Before: {}\nAfter: {}".format(history[user.id]['kick-strike'], history[user.id]['kick-strike'] - 1), inline=True)
         
         elif history[user.id]['case{}'.format(str(case))]['level'] == "Ban":
-            e.add_field(name="Total ban warnings", value="Before: {}\nAfter: {}".format(history[user.id]['ban-warn'], history[user.id]['ban-warn'] - 1), inline=True)
+            e.add_field(name="Total ban strikeings", value="Before: {}\nAfter: {}".format(history[user.id]['ban-strike'], history[user.id]['ban-strike'] - 1), inline=True)
 
-        e.add_field(name="Total warnings", value="Before: {}\nAfter: {}".format(history[user.id]['total-warns'], history[user.id]['total-warns'] - 1), inline=True)
+        e.add_field(name="Total strikeings", value="Before: {}\nAfter: {}".format(history[user.id]['total-strikes'], history[user.id]['total-strikes'] - 1), inline=True)
 
         e.set_footer(text="Click on the reaction to confirm changes")
 
@@ -1079,15 +1079,15 @@ thumbnail's URL pictures:
         if response.reaction.emoji == '✅':
             
             if history[user.id]['case{}'.format(str(case))]['level'] == "Simple":
-                history[user.id]['simple-warn'] = history[user.id]['simple-warn'] - 1
+                history[user.id]['simple-strike'] = history[user.id]['simple-strike'] - 1
 
             elif history[user.id]['case{}'.format(str(case))]['level'] == "Kick":
-                history[user.id]['kick-warn'] = history[user.id]['kick-warn'] - 1
+                history[user.id]['kick-strike'] = history[user.id]['kick-strike'] - 1
         
             elif history[user.id]['case{}'.format(str(case))]['level'] == "Ban":
-                history[user.id]['ban-warn'] = history[user.id]['ban-warn'] - 1
+                history[user.id]['ban-strike'] = history[user.id]['ban-strike'] - 1
 
-            history[user.id]['total-warns'] = history[user.id]['total-warns'] - 1
+            history[user.id]['total-strikes'] = history[user.id]['total-strikes'] - 1
             history[user.id]['case{}'.format(str(case))]['deleted'] = 1
             try:
                 await self.bot.delete_message(msg)
@@ -1123,10 +1123,10 @@ thumbnail's URL pictures:
             return
     
         if user.id not in history:
-            await self.bot.say("That user does not have any warning yet")
+            await self.bot.say("That user does not have any strikeing yet")
             return
         
-        if case < 0 or case > history[user.id]['total-warns']:
+        if case < 0 or case > history[user.id]['total-strikes']:
             await self.bot.say("That case does not exist")
             return
 
@@ -1213,16 +1213,16 @@ def check_version_settings():
                 # Add here new body
                 
                 if settings[server]['thumbnail']['report_embed'] == 'https://cdn.discordapp.com/attachments/303988901570150401/360466192781017088/report.png':
-                    settings[server]['thumbnail']['warning_embed_simple'] = 'https://i.imgur.com/Bl62rGd.png'
+                    settings[server]['thumbnail']['strikeing_embed_simple'] = 'https://i.imgur.com/Bl62rGd.png'
                 
-                if settings[server]['thumbnail']['warning_embed_simple'] == 'https://cdn.discordapp.com/attachments/303988901570150401/360466192781017088/report.png':
-                    settings[server]['thumbnail']['warning_embed_simple'] = 'https://i.imgur.com/Bl62rGd.png'
+                if settings[server]['thumbnail']['strikeing_embed_simple'] == 'https://cdn.discordapp.com/attachments/303988901570150401/360466192781017088/report.png':
+                    settings[server]['thumbnail']['strikeing_embed_simple'] = 'https://i.imgur.com/Bl62rGd.png'
                 
-                if settings[server]['thumbnail']['warning_embed_kick'] == 'https://cdn.discordapp.com/attachments/303988901570150401/360466190956494858/kick.png':
-                    settings[server]['thumbnail']['warning_embed_simple'] = 'https://i.imgur.com/uhrYzyt.png'
+                if settings[server]['thumbnail']['strikeing_embed_kick'] == 'https://cdn.discordapp.com/attachments/303988901570150401/360466190956494858/kick.png':
+                    settings[server]['thumbnail']['strikeing_embed_simple'] = 'https://i.imgur.com/uhrYzyt.png'
                 
-                if settings[server]['thumbnail']['warning_embed_ban'] == 'https://media.discordapp.net/attachments/303988901570150401/360466189979222017/ban.png':
-                    settings[server]['thumbnail']['warning_embed_ban'] = 'https://i.imgur.com/DfBvmic.png'
+                if settings[server]['thumbnail']['strikeing_embed_ban'] == 'https://media.discordapp.net/attachments/303988901570150401/360466189979222017/ban.png':
+                    settings[server]['thumbnail']['strikeing_embed_ban'] = 'https://i.imgur.com/DfBvmic.png'
             
                 dataIO.save_json('data/bettermod/settings.json', settings)
                 print("Json body of data/bettermod/settings.json was successfully updated")
